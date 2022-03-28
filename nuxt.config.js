@@ -32,6 +32,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugi ns
   plugins: [
+    '@/plugins/filters'
   ],
   router: {
     middleware: ['auth']
@@ -76,7 +77,7 @@ export default {
               onAuthStateChangedAction: 'onAuthStateChangedAction',
               subscribeManually: false
             },
-            ssr: false,
+            ssr: false, // default
           },
           firestore: true,
           storage: true

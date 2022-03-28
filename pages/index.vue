@@ -11,7 +11,7 @@
         <v-form ref="form" v-model="valid">
           <div class="d-flex flex-column">
             <v-text-field name="title" label="Board Title" type="text"
-              :rules="[(v) => !!v || 'Board title is required']" required></v-text-field>
+              :rules="[(v) => !!v || 'Board title is required']" required v-model="board.title"></v-text-field>
             <v-btn v-if="enableColor === false" depressed @click="enableColor = true">Choose board color</v-btn>
             <br>
             <v-color-picker v-if="enableColor === false" v-model="board.color" dot-size="25" hide-inputs
@@ -39,7 +39,7 @@
       <h1>My Boards</h1>
       <v-btn small depressed @click="addBoard">ADD BOARD</v-btn>
     </div>
-    <div class="d-flex flex-wrap align-center justify-space-start">
+    <div class="d-flex flex-wrap align-center justify-start">
       <p v-if="boards.length === 0">You have no boards yet.</p>
       <v-card
         :style="board.image.downloadURL != '' ? `background:url(${board.image.downloadURL});`: board.color ? `background-color: ${board.color}` : ''"
@@ -61,9 +61,14 @@
 import {v4 as uuidv4} from 'uuid';
   export default {
       async asyncData() {
-          let boardsRef = $nuxt.$fire.firestore.collection('users').doc($nuxt.$fire.auth.currentUser.uid).collection('boards');
-          let boardData = [];
-        await boardsRef.get().then(function (querySnapshot) {
+           let boardsRef = $nuxt.$fire.firestore
+            .collection('users')
+            .doc($nuxt.$fire.auth.currentUser.uid)
+            .collection('boards')
+          let boardData = []
+        await boardsRef
+            .get()
+            .then(function (querySnapshot) {
             if (querySnapshot.docs.length > 0) {
                 try {
                     for (const doc of querySnapshot.docs) {
@@ -71,12 +76,11 @@ import {v4 as uuidv4} from 'uuid';
                         data.id = doc.id
                         boardData.push(data);
                     }
-                } catch (error) {}
+                } catch (err) {}
             }
         })
-        .catch(function (error) {
-            return {boards: boardData}
-        });
+        .catch(function (error) {});
+        return {boards: boardData}
       },
       data() {
           return {
@@ -128,7 +132,13 @@ import {v4 as uuidv4} from 'uuid';
               let that = this;
               if (this.$refs.form.validate()) {
                   this.board.dateCreated = Date.now();
-                  this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid).collection('boards').doc(this.currentImageId).set(this.board).then(function (docRef) {
+                  this.$fire.firestore
+                  .collection('users')
+                  .doc(this.$fire.auth.currentUser.uid)
+                  .collection('boards')
+                  .doc(this.currentImageId)
+                  .set(this.board)
+                  .then(function (docRef) {
                       that.dialog = false
                       that.snackbar = true;
                         that.snackbarText = 'Board created successfully'
