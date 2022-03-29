@@ -16,7 +16,7 @@
           <v-icon @click="drawer = true">mdi-menu</v-icon>
           <nuxt-link to="/">
             <v-row no-gutters align="center" justify="space-between">
-              <h3 class="logo">Jello</h3>
+              <h3 class="logo">Mello</h3>
             </v-row>
           </nuxt-link>
           <v-icon small @click="deleteBoard()">mdi-delete-outline</v-icon>
