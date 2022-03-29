@@ -12,7 +12,7 @@
                 <v-row no-gutters align="center" justify="center">
                   <nuxt-link to="/">
                   <v-row no-gutters align="center" justify="center">
-                    <h3 class="logo">Jello</h3>
+                    <h3 class="logo">Mello</h3>
                   </v-row>
                   </nuxt-link>
                 </v-row>
